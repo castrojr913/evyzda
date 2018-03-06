@@ -3,7 +3,9 @@
     "license": "proprietary",
     "type": "project",
     "autoload": {
-        "psr-4": { "": "src/" },
+        "psr-4": {
+            "": "src/"
+        },
         "classmap": [
             "app/AppKernel.php",
             "app/AppCache.php"
@@ -15,7 +17,7 @@
         }
     },
     "require": {
-      "php": ">=5.5.9",
+      "php": ">=5.3.3 <=5.7",
        "symfony/symfony": "3.1.*",
        "doctrine/orm": "^2.5",
        "doctrine/doctrine-bundle": "^1.6",
