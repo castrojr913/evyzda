@@ -1,0 +1,18 @@
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+#NelmioApiDocBundle:
+#    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+#    prefix:   /api/doc
+
+# WEBSERVICES ROUTES
+
+api:
+    resource: "@AppBundle/Resources/config/routing.yml"
+    prefix:   /
+
+#api_register_rules:
+#    resource: "@AppBundle/Controller/FlightAlertController.php"
+#    type:   rest
+#    prefix:   /api/registerRules

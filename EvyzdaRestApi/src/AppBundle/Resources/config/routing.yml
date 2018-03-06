@@ -1,0 +1,48 @@
+
+api_homepage:
+    path:     /
+    defaults: { _controller: AppBundle:Default:index }
+
+#--------
+
+api_appointment_post:
+    path:     /api/appointment
+    defaults: { _controller: AppBundle:Appointment:postAppointment }
+    methods:  [POST]
+
+api_appointment_get:
+    path:     /api/appointment/search
+    defaults: { _controller: AppBundle:Appointment:getAppointments }
+    methods:  [GET]
+
+api_appointment_put:
+    path:     /api/appointment/{id}
+    defaults: { _controller: AppBundle:Appointment:putAppointment }
+    methods:  [PUT]
+
+api_appointment_delete:
+    path:     /api/appointment/{id}
+    defaults: { _controller: AppBundle:Appointment:deleteAppointment }
+    methods:  [DELETE]
+
+#--------
+
+api_patient_post:
+    path:     /api/patient
+    defaults: { _controller: AppBundle:Patient:postPatient }
+    methods:  [POST]
+
+api_patient_get:
+    path:     /api/patient/search
+    defaults: { _controller: AppBundle:Patient:getPatients }
+    methods:  [GET]
+
+api_patient_put:
+    path:     /api/patient/{id}
+    defaults: { _controller: AppBundle:Patient:putPatient }
+    methods:  [PUT]
+
+api_patient_delete:
+    path:     /api/patient/{id}
+    defaults: { _controller: AppBundle:Patient:deletePatient }
+    methods:  [DELETE]
