@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">MarkWilliams</string>
+
+    <!-- General -->
+
+    <string name="default_title_edit">Edit</string>
+    <string name="default_image_description"> Image </string>
+    <string name="default_loading">Please, wait…</string>
+    <string name="default_date_placeholder">Choose a date</string>
+    <string name="default_time_placeholder">Choose a time</string>
+    <string name="default_empty">There is no information to show</string>
+
+    <!-- Error -->
+
+    <string name="error_connectivity"> There is no network </string>
+    <string name="error_timeout">The server doesn\'t answer straight away so far, please try later again.</string>
+    <string name="error_webservice">There was an unknown issue. Please, try later again and it still persists, inform the trouble to the support team.</string>
+
+    <!-- Buttons -->
+
+    <string name="button_save">Save</string>
+
+    <!-- Appointments -->
+
+    <string name="appointment_title_search">Appointments</string>
+    <string name="appointment_edit_description">Description</string>
+    <string name="appointment_edit_patient">Patient</string>
+    <string name="appointment_edit_date">Date</string>
+    <string name="appointment_edit_time">Time</string>
+    <string name="appointment_edit_category">Category</string>
+    <string name="appointment_edit_category_first">First Time</string>
+    <string name="appointment_edit_category_check">Check</string>
+    <string name="appointment_error_already_exist">The indicated time has already scheduled</string>
+
+    <!-- Patients -->
+
+    <string name="patient_title_search">Patients</string>
+    <string name="patient_edit_name">Full Name</string>
+    <string name="patient_edit_birthday">Birthday</string>
+    <string name="patient_edit_phone">Phone</string>
+
+
+</resources>

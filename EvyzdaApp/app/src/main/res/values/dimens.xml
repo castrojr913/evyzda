@@ -1,0 +1,10 @@
+<resources>
+
+    <dimen name="screen_margin">16dp</dimen>
+
+    <!-- Loading -->
+
+    <dimen name="app_loading_circular_width">64dp</dimen>
+    <dimen name="app_loading_circular_height">64dp</dimen>
+
+</resources>

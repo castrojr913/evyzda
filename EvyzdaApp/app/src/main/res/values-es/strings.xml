@@ -1,0 +1,42 @@
+<resources>
+    <string name="app_name">MarkWilliams</string>
+
+    <!-- General -->
+
+    <string name="default_title_edit">Editar</string>
+    <string name="default_image_description"> Imagen </string>
+    <string name="default_loading">Por favor, espere…</string>
+    <string name="default_date_placeholder">Seleccione una fecha</string>
+    <string name="default_time_placeholder">Selecciona una hora</string>
+    <string name="default_empty">No hay información para mostrar</string>
+
+    <!-- Error -->
+
+    <string name="error_connectivity"> No hay internet </string>
+    <string name="error_timeout">El servidor no responde de inmediato, intente más tarde nuevamente.</string>
+    <string name="error_webservice">Hubo un problema desconocido. Por favor, intente más tarde nuevamente y aún persiste, informe el problema al equipo de soporte.</string>
+
+    <!-- Buttons -->
+
+    <string name="button_save">Guardar</string>
+
+    <!-- Appointments -->
+
+    <string name="appointment_title_search">Citas</string>
+    <string name="appointment_edit_description">Descripción</string>
+    <string name="appointment_edit_patient">Paciente</string>
+    <string name="appointment_edit_date">Fecha</string>
+    <string name="appointment_edit_time">Hora</string>
+    <string name="appointment_edit_category">Categoría</string>
+    <string name="appointment_edit_category_first">Cita Primera Vez</string>
+    <string name="appointment_edit_category_check">Cita Control</string>
+    <string name="appointment_error_already_exist">La hora indicada ya la tiene agendada</string>
+
+    <!-- Patients -->
+
+    <string name="patient_title_search">Pacientes</string>
+    <string name="patient_edit_name">Nombres</string>
+    <string name="patient_edit_birthday">Fecha de Nacimiento</string>
+    <string name="patient_edit_phone">Teléfono</string>
+
+</resources>

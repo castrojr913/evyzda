@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:textColor="@color/app_drawer_header_text"
+    android:textSize="@dimen/material_drawer_item_profile_text"
+    android:text="@string/app_name" />

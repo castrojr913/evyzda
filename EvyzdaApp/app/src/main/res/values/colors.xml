@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- App Theme -->
+
+    <color name="app_theme_primary">#1F88EE</color>
+    <color name="app_theme_primary_dark">#044C7F</color>
+    <color name="app_theme_accent">#E37E17</color>
+
+    <!-- Drawer -->
+
+    <color name="app_drawer_header_background">@color/app_theme_primary</color>
+    <color name="app_drawer_header_text">#ffffff</color>
+    <color name="app_drawer_text_selected">@color/app_theme_primary_dark</color>
+
+    <!-- Toolbar -->
+
+    <color name="app_toolbar_background">@color/app_theme_primary</color>
+
+    <!-- Loading -->
+
+    <color name="app_loading_background">@color/app_theme_accent</color>
+
+    <!-- Time Picker -->
+
+    <color name="mdtp_accent_color">@color/app_theme_primary</color>
+    <color name="mdtp_accent_color_dark">@color/app_theme_primary_dark</color>
+
+</resources>
