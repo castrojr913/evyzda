@@ -1,0 +1,156 @@
+<html>
+  <head>
+      <meta name="viewport" content="width=device-width" />
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <script type="text/javascript" src="../google/loader.js"></script>
+      <script type="text/javascript">
+        /* 
+       1. min_period values:
+        function getFormat(period) {
+            var fm = period === "fff" ? "LL:NN:SS A" :
+                    period === "ss" ? "LL:NN:SS A" :
+                    period === "mm" ? "LL:NN A" :
+                    period === "hh" ? "LL:NN A" :
+                    period === "DD" ? "MMM DD" :
+                    period === "WW" ? "MMM DD" : 
+                    period === "MMM" ? "MMM" : 
+                    period === "YYYY" ? "YYYY" : "MMM D";
+            console.log("Format: "+fm);        
+            return fm;
+          }
+        */
+
+        var values_to_show = {
+          en:{
+            short_month_names: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            lower_limit: "Lower limit",
+            upper_limit: "Upper limit",
+            legend_1: "Systolic (Avg)",
+            legend_2: "Diastolic (Avg)"
+          },
+          es:{
+            short_month_names: ["Ene", "Feb", "Mar", "Abr", "May", "Jun",
+                                "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+            lower_limit: "Límite inferior",
+            upper_limit: "Límite superior",
+            legend_1: "Sistólico (Promedio)",
+            legend_2: "Diastólico (Promedio)"
+          }
+        };      
+
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(function(){});  
+
+        // === Events ===
+        
+        Ti.App.addEventListener("paintChart", function(e) {
+          console.log("*** data **** -> " + JSON.stringify(e.data));
+          console.log("*** max **** -> " + JSON.stringify(e.high_value));
+          console.log("*** min **** -> " + JSON.stringify(e.low_value));
+          console.log("*** min_period **** -> " + JSON.stringify(e.min_period));
+          console.log("*** min_date **** -> " + JSON.stringify(e.min_date));
+          console.log("*** max_date **** -> " + JSON.stringify(e.max_date));
+          if (e.data.length != 0)  {
+            drawChart(e,  values_to_show[e.language_code]);
+          } else {
+            var div = document.getElementById('chart');
+            div.innerHTML = e.msg_no_data;
+          }
+        });
+
+        // === Functions ===
+
+        function asc(a, b) {
+          return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+        }  
+
+        function drawChart(e, values) {
+          var dataValues = [];
+          var yValues = [];
+          for (var i = 0; i < e.data.length; i++) {
+            var sysVal = Number(e.data[i].systolic);
+            var diaVal = Number(e.data[i].diastolic);
+            yValues.push(sysVal);
+            yValues.push(diaVal);
+            var valArray = [new Date(e.data[i].date), sysVal, diaVal, Number(e.low_value), Number(e.high_value)];
+            dataValues.push(valArray);
+          }
+          yValues.sort(function(a,b){ return asc(a, b); });
+          var yAxisValues = {
+            min: Number(e.low_value) < 0 ? Number(e.low_value) : 0,
+            max: Number(e.high_value) > 150 ? Number(e.high_value) : 150
+          };
+          var data = new google.visualization.DataTable();
+          data.addColumn('date', '');
+          data.addColumn('number', values.legend_1);
+          data.addColumn('number', values.legend_2);
+          data.addColumn('number', values.lower_limit);
+          data.addColumn('number', values.upper_limit);
+          data.addRows(dataValues);
+          var chart = new google.visualization.ComboChart(document.getElementById('chart'));
+          chart.draw(data, {
+            chartArea: { width: '75%' },
+            legend: { position: 'top' }, // TODO Enable legend if it's required
+            width: e.width,
+            height: e.height,
+            pointSize: 7,
+            explorer: { 
+                actions: ['dragToZoom', 'rightClickToReset'],
+                axis: 'horizontal',
+                keepInBounds: true,
+                maxZoomIn: 4.0
+            },
+            vAxis: {
+                title: 'mmHg',
+                viewWindow: { 
+                  min: yValues[0] < yAxisValues.min ? yValues[0] - 10 : yAxisValues.min - 10,
+                  max: yValues[yValues.length - 1] > yAxisValues.max ? yValues[yValues.length - 1] + 10 : yAxisValues.max + 10
+                }
+            },
+            hAxis: {
+                format : "MMM d",
+                viewWindow: { 
+                  min: new Date(e.min_date),
+                  max: new Date(e.max_date)
+                }
+            },
+            seriesType: 'line',
+            series: {
+              0: { color: '#0F84FE' }, // systolic
+              1: { color: '#FC363B' }, // diastolic
+              2: { type: 'line', pointSize: 0, color: '#444444', visibleInLegend: false, lineDashStyle:  [2, 2, 20, 2, 20, 2]  }, // Min Target
+              3: { type: 'line', pointSize: 0, color: '#444444', visibleInLegend: false, lineDashStyle:  [2, 2, 20, 2, 20, 2]  }, // Max Target
+            }
+          }); 
+        }
+        /* ******* Testing ************ 
+        var e = {
+          data: [
+            {"date":"Mon Apr 02 2018 00:00:00 GMT-0500","systolic":"3000","diastolic":"100"},
+            {"date":"Mon Apr 09 2018 00:00:00 GMT-0500","systolic":"1109","diastolic":"127"},
+            //{"date":"Mon Apr 16 2018 00:00:00 GMT-0500","systolic":"110","diastolic":"127"},
+            //{"date":"Mon Apr 23 2018 00:00:00 GMT-0500","systolic":"90","diastolic":"100"}
+          ],
+          low_value: "80",
+          high_value: "160",
+          min_period: "sssss",
+          language_code: "es",
+          min_date: "2018-03-20T13:37:49.349Z",
+          max_date: "2018-04-23T13:36:43.455Z",
+          width: 800
+        };
+          
+        setTimeout(function(){
+          drawChart(e,  values_to_show[e.language_code]);
+        }, 500);
+        /******************************/
+        
+      </script>
+  </head>
+  <body >
+      <div style="width:100%; display: grid; place-items: center center;">
+        <div id="chart"></div>
+      </div>
+  </body>
+</html>

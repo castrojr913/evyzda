@@ -1,0 +1,129 @@
+<html>
+  <head>
+      <meta name="viewport" content="width=device-width" />
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <script type="text/javascript" src="../google/loader.js"></script>
+      <script type="text/javascript">
+        
+        var values_to_show = {
+          en:{
+            short_month_names: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            lower_limit: "Lower limit",
+            upper_limit: "Upper limit",
+            legend: "Weight (Avg)",
+            unit: "Pound"
+          },
+          es:{
+            short_month_names: ["Ene", "Feb", "Mar", "Abr", "May", "Jun",
+                                "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"],
+            lower_limit: "Límite inferior",
+            upper_limit: "Límite superior",
+            legend: "Peso (Promedio)",
+            unit: "Libra"
+          }
+        };      
+
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(function(){});  
+
+        // === Events ===
+
+        Ti.App.addEventListener("paintChart", function(e) {
+          if (e.data.length != 0)  {
+            drawChart(e,  values_to_show[e.language_code]);
+          } else {
+            var div = document.getElementById('chart');
+            div.innerHTML = e.msg_no_data;
+          }
+        });
+
+        // === Functions ===
+
+        function asc(a, b) {
+          return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+        }  
+
+        function drawChart(e, values) {
+          var dataValues = [];
+          var yValues = [];
+          for (var i = 0; i < e.data.length; i++) {
+            var signalVal = Number(e.data[i].weight);
+            yValues.push(signalVal);
+            var valArray = [new Date(e.data[i].date), signalVal, Number(e.low_value), Number(e.high_value)];
+            dataValues.push(valArray);
+          }
+          yValues.sort(function(a,b){ return asc(a, b); });
+          var yAxisValues = {
+            min: Number(e.low_value) < 0 ? Number(e.low_value) : 0,
+            max: Number(e.high_value) > 200 ? Number(e.high_value) : 200
+          };
+          var data = new google.visualization.DataTable();
+          data.addColumn('date', '');
+          data.addColumn('number', values.legend);
+          data.addColumn('number', values.lower_limit);
+          data.addColumn('number', values.upper_limit);
+          data.addRows(dataValues);
+          var chart = new google.visualization.ComboChart(document.getElementById('chart'));
+          chart.draw(data, {
+            chartArea: { width: '75%' },
+            legend: { position: 'top' }, // TODO Enable legend if it's required
+            width: e.width,
+            height: e.height,
+            pointSize: 7,
+            explorer: { 
+                actions: ['dragToZoom', 'rightClickToReset'],
+                axis: 'horizontal',
+                keepInBounds: true,
+                maxZoomIn: 4.0
+            },
+            vAxis: {
+                title: e.unit,
+                viewWindow: { 
+                  min: yValues[0] < yAxisValues.min ? yValues[0] - 10 : yAxisValues.min - 10,
+                  max: yValues[yValues.length - 1] > yAxisValues.max ? yValues[yValues.length - 1] + 10 : yAxisValues.max + 10
+                }
+            },
+            hAxis: {
+                format : "MMM d",
+                viewWindow: { 
+                  min: new Date(e.min_date),
+                  max: new Date(e.max_date)
+                }
+            },
+            seriesType: 'line',
+            series: {
+              0: { color: '#FFA229' },
+              1: { type: 'line', pointSize: 0, color: '#444444', visibleInLegend: false, lineDashStyle:  [2, 2, 20, 2, 20, 2]  }, // Min Target
+              2: { type: 'line', pointSize: 0, color: '#444444', visibleInLegend: false, lineDashStyle:  [2, 2, 20, 2, 20, 2]  }, // Max Target
+            }
+          }); 
+        }
+        /* **********************
+         *  TESTING 
+        var e = {
+          data: [
+            {"date":"Mon Apr 02 2018 00:00:00 GMT-0500","weight":"130"},
+          ],
+          low_value: "80",
+          high_value: "160",
+          min_period: "yyyy",
+          language_code: "es",
+          min_date: "2018-04-02T13:37:49.349Z",
+          max_date: "2018-04-23T13:36:43.455Z",
+          width: 800
+        };
+          
+        setTimeout(function(){
+          drawChart(e,  values_to_show[e.language_code]);
+        }, 500);
+        /******************************/
+        
+      </script>
+  </head>
+  <body >
+      <div style="width:100%; display: grid; place-items: center center;">
+        <div id="chart"></div>
+      </div>
+  </body>
+</html>
